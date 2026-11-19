@@ -83,3 +83,30 @@ a = 1 or b = 2 and c = 3
     (comparison
       (identifier)
       (number))))
+
+==================
+6. Perbandingan boolean
+==================
+
+archived = true
+
+---
+
+(query
+  (comparison
+    (identifier)
+    (boolean)))
+
+==================
+7. Operator NOT
+==================
+
+not archived = true
+
+---
+
+(query
+  (not_expression
+    (comparison
+      (identifier)
+      (boolean))))
