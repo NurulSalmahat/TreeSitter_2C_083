@@ -15,6 +15,7 @@ module.exports = grammar({
       $.comparison,
       $.and_expression,
       $.or_expression,
+      $.parenthesized,
     ),
 
     comparison: $ => seq(
@@ -25,6 +26,7 @@ module.exports = grammar({
 
     or_expression: $ => prec.left(1, seq($._expr, 'or', $._expr)),
     and_expression: $ => prec.left(2, seq($._expr, 'and', $._expr)),
+    parenthesized: $ => seq('(', $._expr, ')'),
 
     _value: $ => choice($.string, $.number),
     identifier: $ => /[a-zA-Z_][a-zA-Z0-9_.]*/,
