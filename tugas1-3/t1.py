@@ -6,6 +6,8 @@ parser = Parser(Language(tspython.language()))
 
 # Percobaan 1: Kode sederhana
 kode_sederhana = b"x = 1\n"
+kode_sederhana2 = b"x = 1 + 2\n"
+kode_sederhana3 = b"print(x)\n"
 
 # Percobaan 2: Function
 kode_function = b"""def sapa(nama):
@@ -29,6 +31,8 @@ kode_class = b"""class Mahasiswa:
 # Menjalankan semua percobaan
 percobaan = [
     ("Kode sederhana", kode_sederhana),
+    ("Kode sederhana2", kode_sederhana2),
+    ("Kode sederhana3", kode_sederhana3),
     ("Function", kode_function),
     ("If/Else", kode_if_else),
     ("Class", kode_class),
