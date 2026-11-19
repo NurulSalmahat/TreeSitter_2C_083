@@ -17,6 +17,7 @@ module.exports = grammar({
       $.or_expression,
       $.not_expression,
       $.parenthesized,
+      $.in_expression,
     ),
 
     comparison: $ => seq(
@@ -45,6 +46,19 @@ module.exports = grammar({
     parenthesized: $ => seq(
       '(',
       field('expression', $._expr),
+      ')',
+    ),
+
+    in_expression: $ => seq(
+      field('field', $.identifier),
+      'in',
+      field('values', $.value_list),
+    ),
+
+    value_list: $ => seq(
+      '(',
+      $._value,
+      repeat(seq(',', $._value)),
       ')',
     ),
 
