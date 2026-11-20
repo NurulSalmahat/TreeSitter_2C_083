@@ -13,6 +13,8 @@ Q_FUNGSI = Query(
     "(function_definition name: (identifier) @nama) @fungsi"
 )
 
+ABAIKAN_FOLDER = {".git", "venv", ".venv", "node_modules", "__pycache__"}
+
 def cari_error(node):
     if node.is_error or node.is_missing:
         return node
@@ -29,11 +31,12 @@ def cek_file(path):
 
     # Fitur 1: komentar TODO/FIXME
     for node in QueryCursor(Q_TODO).captures(tree.root_node).get("c", []):
-        print(f"{path}:{node.start_point[0] + 1}: {node.text.decode().strip()}")
+        teks = node.text.decode(errors="replace").strip()
+        print(f"{path}:{node.start_point[0] + 1}: {teks}")
 
     # Fitur 2: fungsi yang lebih dari 30 baris
     for _, cap in QueryCursor(Q_FUNGSI).matches(tree.root_node):
-        nama = cap["nama"][0].text.decode()
+        nama = cap["nama"][0].text.decode(errors="replace")
         fungsi = cap["fungsi"][0]
 
         jumlah_baris = (
@@ -57,4 +60,6 @@ def cek_file(path):
             )
 
 for path in Path(sys.argv[1]).rglob("*.py"):
+    if any(part in ABAIKAN_FOLDER for part in path.parts):
+        continue
     cek_file(path)
