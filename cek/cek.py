@@ -13,6 +13,17 @@ Q_FUNGSI = Query(
     "(function_definition name: (identifier) @nama) @fungsi"
 )
 
+def cari_error(node):
+    if node.is_error or node.is_missing:
+        return node
+
+    for child in node.children:
+        hasil = cari_error(child)
+        if hasil is not None:
+            return hasil
+
+    return None
+
 def cek_file(path):
     tree = parser.parse(path.read_bytes())
 
@@ -35,7 +46,15 @@ def cek_file(path):
                 f"{jumlah_baris} baris"
             )
 
-    # Fitur 3 (TODO): file yang pohonnya mengandung error
+    # Fitur 3: file yang memiliki syntax error
+    if tree.root_node.has_error:
+        error = cari_error(tree.root_node)
+
+        if error is not None:
+            print(
+                f"{path}: syntax error pada baris "
+                f"{error.start_point[0] + 1}"
+            )
 
 for path in Path(sys.argv[1]).rglob("*.py"):
     cek_file(path)
